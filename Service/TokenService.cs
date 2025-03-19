@@ -19,7 +19,7 @@ namespace tcc1_api.Service
         public TokenService(IConfiguration config)
         {
             _config = config;
-            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("SECRET_KEY")));
+            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_SECRET")));
         }
         public string CreateToken(AppUser user)
         {
@@ -36,8 +36,8 @@ namespace tcc1_api.Service
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.Now.AddDays(7),
                 SigningCredentials = creds,
-                Issuer = Environment.GetEnvironmentVariable("ISSUER"),
-                Audience = Environment.GetEnvironmentVariable("AUDIENCE")
+                Issuer = Environment.GetEnvironmentVariable("JWT_ISSUER"),
+                Audience = Environment.GetEnvironmentVariable("JWT_AUDIENCE")
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();
