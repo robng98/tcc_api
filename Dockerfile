@@ -1,25 +1,18 @@
-# Use Microsoft's .NET 8.0 SDK image
-
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
-
-# Set up the app environment
-
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
+EXPOSE 8080
 
-# Copy everything and build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+COPY ["tcc1_api.csproj", "."]
+RUN dotnet restore "./tcc1_api.csproj"
+COPY . .
+RUN dotnet build "tcc1_api.csproj" -c Release -o /app/build
 
-COPY . ./
+FROM build AS publish
+RUN dotnet publish "tcc1_api.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
-RUN dotnet publish -c Release -o out
-
-# Runtime image
-
-FROM mcr.microsoft.com/dotnet/aspnet:8.0
-
+FROM base AS final
 WORKDIR /app
-
-COPY --from=build-env /app/out .
-
-# Start the app
-
-ENTRYPOINT ["dotnet", "tcc1_api.dll"]
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "tcc_api.dll"]
