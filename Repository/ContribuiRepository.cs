@@ -54,6 +54,12 @@ namespace tcc1_api.Repository
             {
                 contribuicoes = contribuicoes.Where(e => e.EdicaoId == query.EdicaoId);
             }
+
+            // Apply filters if provided
+            if (query.ContribuidorId.HasValue)
+            {
+                contribuicoes = contribuicoes.Where(e => e.ContribuidorId == query.ContribuidorId);
+            }
             
             // Apply sorting using the extension method
             contribuicoes = contribuicoes.ApplySort(query.SortBy, query.IsDescending);

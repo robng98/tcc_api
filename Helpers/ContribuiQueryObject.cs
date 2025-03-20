@@ -8,6 +8,7 @@ namespace tcc1_api.Helpers
     public class ContribuiQueryObject
     {
         public int? EdicaoId { get; set; } = null;
+        public int? ContribuidorId { get; set; } = null;
         public int PageNumber { get; set; } = 1;
         public int PageSize { get; set; } = 10;
         public string SortBy { get; set; } = "ContribuidorId";
