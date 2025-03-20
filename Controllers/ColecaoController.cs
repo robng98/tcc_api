@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using tcc1_api.Data;
 using tcc1_api.Dtos.Colecao;
+using tcc1_api.Dtos.Contribui;
 using tcc1_api.Extensions;
 using tcc1_api.Helpers;
 using tcc1_api.Interfaces;
@@ -167,11 +168,11 @@ namespace tcc1_api.Controllers
             return Ok(statistics);
         }
 
-        [HttpPost("create/{nome}")]	
+        [HttpPost("create")]	
         [Authorize]
-        public async Task<IActionResult> CreateColecao( [FromRoute] string nome)
+        public async Task<IActionResult> CreateColecao( [FromBody] CreateColecaoRequestDto colecaoRequestDto)
         {
-            if (string.IsNullOrEmpty(nome))
+            if (string.IsNullOrEmpty(colecaoRequestDto.NomeColecao))
             {
                 return BadRequest("Nome da coleção não pode ser vazio.");
             }
@@ -179,7 +180,7 @@ namespace tcc1_api.Controllers
             var appUser = await _userManager.FindByNameAsync(username);
             var colecaoModel = new Colecao
             {
-                NomeColecao = nome,
+                NomeColecao = colecaoRequestDto.NomeColecao,
                 AppUserId = appUser.Id
             };
             await _colecaoRepo.CreateColecaoAsync(colecaoModel);
