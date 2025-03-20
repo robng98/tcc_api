@@ -22,14 +22,14 @@ namespace tcc1_api.Mappers
             };
         }
 
-        public static Exemplar ToExemplarFromCreateDTO(this CreateExemplarRequestDto exemplarDto, int edicaoId, int colecaoId)
+        public static Exemplar ToExemplarFromCreateDTO(this CreateExemplarRequestDto exemplarDto)
         {
             return new Exemplar
             {
                 EstadoConservacao = exemplarDto.EstadoConservacao,
                 DataAquisicao = exemplarDto.DataAquisicao,
-                ColecaoId = colecaoId,
-                EdicaoId = edicaoId
+                ColecaoId = exemplarDto.ColecaoId,
+                EdicaoId = exemplarDto.EdicaoId
             };
         }
         

@@ -80,21 +80,21 @@ namespace tcc1_api.Controllers
             return Ok(exemplar.ToExemplarDto());
         }
 
-        [HttpPost("create/{edicaoId:int}/{colecaoId:int}")]
+        [HttpPost("create/")]
         [Authorize]
-        public async Task<IActionResult> CreateExemplar([FromRoute]int edicaoId, [FromRoute]int colecaoId, [FromBody] CreateExemplarRequestDto exemplarDto)
+        public async Task<IActionResult> CreateExemplar([FromBody] CreateExemplarRequestDto exemplarDto)
         {
             var username = User.GetUsername();
             var appUser = await _userManager.FindByNameAsync(username);
             
             // Verify that the colecao belongs to the current user
-            var colecao = await _context.Colecoes.FindAsync(colecaoId);
+            var colecao = await _context.Colecoes.FindAsync(exemplarDto.ColecaoId);
             if (colecao == null || colecao.AppUserId != appUser.Id)
             {
                 return Unauthorized("You don't have access to this collection");
             }
 
-            var exemplarModel = exemplarDto.ToExemplarFromCreateDTO(edicaoId, colecaoId);
+            var exemplarModel = exemplarDto.ToExemplarFromCreateDTO();
 
             await _exemplarRepo.CreateExemplarAsync(exemplarModel);
 

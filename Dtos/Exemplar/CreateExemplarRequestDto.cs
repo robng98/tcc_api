@@ -9,6 +9,8 @@ namespace tcc1_api.Dtos.Exemplar
 {
     public class CreateExemplarRequestDto
     {
+        public int EdicaoId { get; set; }
+        public int ColecaoId { get; set; }
         public string EstadoConservacao { get; set; } = string.Empty;
         public DateTime DataAquisicao { get; set; }
     }
