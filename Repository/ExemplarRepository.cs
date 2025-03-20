@@ -72,7 +72,7 @@ namespace tcc1_api.Repository
             // Apply filters if provided
             if (!string.IsNullOrWhiteSpace(query.EstadoConservacao))
             {
-                exemplares = exemplares.Where(e => e.EstadoConservacao.Contains(query.EstadoConservacao));
+                exemplares = exemplares.Where(e => e.EstadoConservacao.ToLower().Contains(query.EstadoConservacao.ToLower()));
             }
 
             if (query.EdicaoId.HasValue)

@@ -65,12 +65,12 @@ namespace tcc1_api.Repository
             // Apply filters if provided
             if (!string.IsNullOrWhiteSpace(query.NomeInter))
             {
-                series = series.Where(s => s.NomeInter.Contains(query.NomeInter));
+                series = series.Where(s => s.NomeInter.ToLower().Contains(query.NomeInter.ToLower()));
             }
             
             if (!string.IsNullOrWhiteSpace(query.EstadoPubAtual))
             {
-                series = series.Where(s => s.EstadoPubAtual.Contains(query.EstadoPubAtual));
+                series = series.Where(s => s.EstadoPubAtual.ToLower().Contains(query.EstadoPubAtual.ToLower()));
             }
             
             if (query.EditoraId.HasValue)
@@ -106,12 +106,12 @@ namespace tcc1_api.Repository
             // Apply filters if provided
             if (!string.IsNullOrWhiteSpace(query.NomeInter))
             {
-                comics = comics.Where(s => s.NomeInter.Contains(query.NomeInter));
+                comics = comics.Where(s => s.NomeInter.ToLower().Contains(query.NomeInter.ToLower()));
             }
             
             if (!string.IsNullOrWhiteSpace(query.EstadoPubAtual))
             {
-                comics = comics.Where(s => s.EstadoPubAtual.Contains(query.EstadoPubAtual));
+                comics = comics.Where(s => s.EstadoPubAtual.ToLower().Contains(query.EstadoPubAtual.ToLower()));
             }
             
             if (query.EditoraId.HasValue)
@@ -148,12 +148,12 @@ namespace tcc1_api.Repository
             // Apply filters if provided
             if (!string.IsNullOrWhiteSpace(query.NomeInter))
             {
-                mangas = mangas.Where(s => s.NomeInter.Contains(query.NomeInter));
+                mangas = mangas.Where(s => s.NomeInter.ToLower().Contains(query.NomeInter.ToLower()));
             }
             
             if (!string.IsNullOrWhiteSpace(query.EstadoPubAtual))
             {
-                mangas = mangas.Where(s => s.EstadoPubAtual.Contains(query.EstadoPubAtual));
+                mangas = mangas.Where(s => s.EstadoPubAtual.ToLower().Contains(query.EstadoPubAtual.ToLower()));
             }
             
             if (query.EditoraId.HasValue)

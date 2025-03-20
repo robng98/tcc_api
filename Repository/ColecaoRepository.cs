@@ -43,7 +43,7 @@ namespace tcc1_api.Repository
             // Apply filters if provided
             if (!string.IsNullOrWhiteSpace(query.NomeColecao))
             {
-                colecoes = colecoes.Where(c => c.NomeColecao.Contains(query.NomeColecao));
+                colecoes = colecoes.Where(c => c.NomeColecao.ToLower().Contains(query.NomeColecao.ToLower()));
             }
             
             // Apply sorting using the extension method

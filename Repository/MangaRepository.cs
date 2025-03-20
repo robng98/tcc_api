@@ -54,7 +54,7 @@ namespace tcc1_api.Repository
             }
             if (!string.IsNullOrWhiteSpace(query.Demografia))
             {
-                manga = manga.Where(e => e.Demografia.Contains(query.Demografia));
+                manga = manga.Where(e => e.Demografia.ToLower().Contains(query.Demografia.ToLower()));
             }
             if (query.SerieId != -1)
             {

@@ -59,7 +59,7 @@ namespace tcc1_api.Repository
             // Apply filters if provided
             if (!string.IsNullOrWhiteSpace(query.Nome))
             {
-                editoras = editoras.Where(e => e.Nome.Contains(query.Nome));
+                editoras = editoras.Where(e => e.Nome.ToLower().Contains(query.Nome.ToLower()));
             }
             
             // Apply sorting using the extension method
