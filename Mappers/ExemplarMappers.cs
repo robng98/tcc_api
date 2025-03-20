@@ -18,7 +18,7 @@ namespace tcc1_api.Mappers
                 DataAquisicao = exemplar.DataAquisicao,
                 EdicaoId = exemplar.EdicaoId,
                 ColecaoId = exemplar.ColecaoId,
-                SerieNome = exemplar.Edicao.Serie.NomeInter,
+                SerieNome = exemplar.Edicao?.Serie?.NomeInter ?? "Série não encontrada",
 
             };
         }
