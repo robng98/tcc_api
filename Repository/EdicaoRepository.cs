@@ -46,43 +46,9 @@ namespace tcc1_api.Repository
             return await _context.Edicoes.Include(e => e.Serie).FirstOrDefaultAsync(e => e.Id == id);
         }
 
-        // public async Task<List<Edicao>> GetEdicoesAsync(EdicaoQueryObject query)
-        // {
-        //     var edicoes = _context.Edicoes.Include(c => c.Serie).OrderByDescending(e => e.Id).AsQueryable();
-
-        //     if (!string.IsNullOrWhiteSpace(query.Numero))
-        //     {
-        //         edicoes = edicoes.Where(e => e.Numero.Contains(query.Numero));
-        //     }
-
-        //     var skipNumber = query.PageSize * (query.PageNumber - 1);
-
-        //     return await edicoes.Skip(skipNumber).Take(query.PageSize).ToListAsync();
-        // }
-
-        // public async Task<List<Edicao>> GetEdicoesBySerieIdAsync(int serieId, EdicaoQueryObject query)
-        // {
-        //     var edicoes = _context
-        //     .Edicoes
-        //     .Include(e => e.Serie)
-        //     .Where(e => e.SerieId == serieId)
-        //     .OrderByDescending(e => e.Id).AsQueryable();
-
-        //     if (!string.IsNullOrWhiteSpace(query.Numero))
-        //     {
-        //         edicoes = edicoes.Where(e => e.Numero.Contains(query.Numero));
-        //     }
-
-        //     var skipNumber = query.PageSize * (query.PageNumber - 1);
-
-        //     return await edicoes.Skip(skipNumber).Take(query.PageSize).ToListAsync();
-        // }
-
         public async Task<(List<Edicao> Edicoes, int TotalCount)> GetEdicoesAsync(EdicaoQueryObject query)
         {
-            // var edicoes = _context.Edicoes.Include(c => c.Serie).OrderBy(e => e.Id).AsQueryable();
             var edicoes = _context.Edicoes.Include(c => c.Serie).AsQueryable();
-
 
             if (!string.IsNullOrWhiteSpace(query.Numero))
             {
