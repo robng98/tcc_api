@@ -15,5 +15,6 @@ namespace tcc1_api.Dtos.Exemplar
         public DateTime DataAquisicao { get; set; }
         public int EdicaoId { get; set; }
         public int ColecaoId { get; set; }
+        public string SerieNome { get; set; } = string.Empty;
     }
 }

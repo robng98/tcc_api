@@ -84,6 +84,11 @@ namespace tcc1_api.Repository
             {
                 exemplares = exemplares.Where(e => e.ColecaoId == query.ColecaoId);
             }
+
+            if(query.SerieNome != null)
+            {
+                exemplares = exemplares.Where(e => e.Edicao.Serie.NomeInter.ToLower().Contains(query.SerieNome.ToLower()));
+            }
             
             // Apply sorting using the extension method
             exemplares = exemplares.ApplySort(query.SortBy, query.IsDescending);

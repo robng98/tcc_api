@@ -17,7 +17,8 @@ namespace tcc1_api.Mappers
                 EstadoConservacao = exemplar.EstadoConservacao,
                 DataAquisicao = exemplar.DataAquisicao,
                 EdicaoId = exemplar.EdicaoId,
-                ColecaoId = exemplar.ColecaoId
+                ColecaoId = exemplar.ColecaoId,
+                SerieNome = exemplar.Edicao.Serie.NomeInter,
 
             };
         }

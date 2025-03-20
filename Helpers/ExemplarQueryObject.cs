@@ -7,6 +7,7 @@ namespace tcc1_api.Helpers
 {
     public class ExemplarQueryObject
     {
+        public string? SerieNome { get; set; } = null;
         public string? EstadoConservacao { get; set; } = null;
         public int? EdicaoId { get; set; } = null;
         public int? ColecaoId { get; set; } = null;
