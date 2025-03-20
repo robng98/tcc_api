@@ -51,6 +51,25 @@ namespace tcc1_api.Controllers
             return Ok(paginationResponse);
         }
 
+        [HttpGet("{colecaoId}")]
+        [Authorize]
+        public async Task<IActionResult> GetColecaoById([FromRoute] int colecaoId)
+        {
+            var username = User.GetUsername();
+            var appUser = await _userManager.FindByNameAsync(username);
+            
+            var userColecoes = await _colecaoRepo.GetUserColecoes(appUser);
+            var colecao = userColecoes.FirstOrDefault(c => c.Id == colecaoId);
+            
+            if (colecao == null)
+            {
+                return NotFound("Coleção não encontrada ou não pertence ao usuário.");
+            }
+            
+            var colecaoDto = colecao.ToColecaoDto();
+            return Ok(colecaoDto);
+        }
+
         [HttpGet("{colecaoId}/statistics")]
         [Authorize]
         public async Task<IActionResult> GetColecaoStatistics( [FromRoute] int colecaoId)
