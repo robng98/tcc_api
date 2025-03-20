@@ -52,7 +52,7 @@ namespace tcc1_api.Controllers
 
         [HttpGet("{colecaoId}/statistics")]
         [Authorize]
-        public async Task<IActionResult> GetColecaoStatistics(int colecaoId)
+        public async Task<IActionResult> GetColecaoStatistics( [FromRoute] int colecaoId)
         {
             var username = User.GetUsername();
             var appUser = await _userManager.FindByNameAsync(username);
@@ -167,9 +167,9 @@ namespace tcc1_api.Controllers
             return Ok(statistics);
         }
 
-        [HttpPost("create")]	
+        [HttpPost("create/{nome}")]	
         [Authorize]
-        public async Task<IActionResult> CreateColecao(string nome)
+        public async Task<IActionResult> CreateColecao( [FromRoute] string nome)
         {
             if (string.IsNullOrEmpty(nome))
             {
@@ -194,9 +194,9 @@ namespace tcc1_api.Controllers
             }
         }
         
-        [HttpDelete("delete")]
+        [HttpDelete("delete/{colecaoId}")]
         [Authorize]
-        public async Task<IActionResult> DeleteColecao(int colecaoId)
+        public async Task<IActionResult> DeleteColecao( [FromRoute] int colecaoId)
         {
             var username = User.GetUsername();
             var appUser = await _userManager.FindByNameAsync(username);
