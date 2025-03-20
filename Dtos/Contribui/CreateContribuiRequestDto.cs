@@ -6,10 +6,10 @@ using tcc1_api.Dtos.Contribuidor;
 
 namespace tcc1_api.Dtos.Contribui
 {
-    public class CreateContribuiRequestDto : CreateContribuidorRequestDto
+    public class CreateContribuiRequestDto
     {
-        // public int ContribuidorId { get; set; }
-        // public int SerieId { get; set; }
+        public int ContribuidorId { get; set; }
+        public int EdicaoId { get; set; }
         public string Funcao { get; set; } = string.Empty;
     }
 }

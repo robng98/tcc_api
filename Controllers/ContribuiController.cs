@@ -19,11 +19,11 @@ namespace tcc1_api.Controllers
         private readonly IEdicaoRepository _edicaoRepo;
         private readonly IContribuiRepository _contribuiRepo;
         private readonly IContribuidorRepository _contribuidorRepo;
-        
+
         public ContribuiController
-        (ApplicationDbContext context, 
-        IContribuiRepository contribuiRepo, 
-        IEdicaoRepository edicaoRepo, 
+        (ApplicationDbContext context,
+        IContribuiRepository contribuiRepo,
+        IEdicaoRepository edicaoRepo,
         IContribuidorRepository contribuidorRepo)
         {
             _contribuiRepo = contribuiRepo;
@@ -36,38 +36,48 @@ namespace tcc1_api.Controllers
         public async Task<IActionResult> GetContribuidoresEdicao([FromQuery] ContribuiQueryObject query)
         {
             var (contribuicoes, totalCount) = await _contribuiRepo.GetContribuidoresEdicaoAsync(query);
-            
+
             var paginationResponse = new PaginationResponse<ContribuiNormalDto>(
                 contribuicoes,
                 query.PageNumber,
                 query.PageSize,
                 totalCount
             );
-            
+
             return Ok(paginationResponse);
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> CreateContribuicao(int contribuidorId, int edicaoId, string funcao)
+        // public async Task<IActionResult> CreateContribuicao([FromBody] int contribuidorId, [FromBody] int edicaoId, [FromBody] string funcao)
+        public async Task<IActionResult> CreateContribuicao([FromBody] CreateContribuiRequestDto contribuiRequestDto)
         {
-            var edicao = await _edicaoRepo.GetEdicaoByIdAsync(edicaoId);
-            var contribuidor = await _contribuidorRepo.GetContribuidorByIdAsync(contribuidorId);
+            var edicao = await _edicaoRepo.GetEdicaoByIdAsync(contribuiRequestDto.EdicaoId);
+            var contribuidor = await _contribuidorRepo.GetContribuidorByIdAsync(contribuiRequestDto.ContribuidorId);
 
             if (edicao == null || contribuidor == null)
             {
                 return NotFound("Edição ou Contribuidor não encontrado");
             }
 
+            if (!contribuiRequestDto.Funcao.Equals("roteirista", StringComparison.CurrentCultureIgnoreCase)
+                && !contribuiRequestDto.Funcao.Equals("desenhista", StringComparison.CurrentCultureIgnoreCase)
+                && !contribuiRequestDto.Funcao.Equals("arte-finalista", StringComparison.CurrentCultureIgnoreCase)
+                && !contribuiRequestDto.Funcao.Equals("colorista", StringComparison.CurrentCultureIgnoreCase)
+                && !contribuiRequestDto.Funcao.Equals("mangaka", StringComparison.CurrentCultureIgnoreCase))
+            {
+                return BadRequest("Função inválida");
+            }
+
             var contribuiModel = new Contribui
             {
-                ContribuidorId = contribuidorId,
-                EdicaoId = edicaoId,
-                Funcao = funcao
+                ContribuidorId = contribuiRequestDto.ContribuidorId,
+                EdicaoId = contribuiRequestDto.EdicaoId,
+                Funcao = contribuiRequestDto.Funcao
             };
 
             await _contribuiRepo.CreateContribuiAsync(contribuiModel);
 
-            if(contribuiModel == null)
+            if (contribuiModel == null)
             {
                 return StatusCode(500, "Contribuição não foi criada");
             }
@@ -75,8 +85,8 @@ namespace tcc1_api.Controllers
             return Created();
         }
 
-        [HttpDelete("delete")]
-        public async Task<IActionResult> DeleteContribuicao(int contribuidorId, int edicaoId)
+        [HttpDelete("delete/{contribuidorId}/{edicaoId}")]
+        public async Task<IActionResult> DeleteContribuicao([FromRoute] int contribuidorId, [FromRoute] int edicaoId)
         {
             var contribuiModel = await _contribuiRepo.DeleteContribuiAsync(contribuidorId, edicaoId);
 
