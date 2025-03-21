@@ -17,7 +17,7 @@ namespace tcc1_api.Mappers
                 AnoCriacao = editora.AnoCriacao,
                 Nome = editora.Nome,
                 Logo = editora.Logo,
-                Series = editora.Series.Select(s => s.ToSerieDto()).ToList()
+                TotalSeries = editora.Series.Count
             };
         }
 
