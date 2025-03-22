@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using tcc1_api.Data;
 using tcc1_api.Dtos.Serie;
+using tcc1_api.Extensions;
 using tcc1_api.Helpers;
 using tcc1_api.Interfaces;
 using tcc1_api.Mappers;
@@ -27,10 +28,13 @@ namespace tcc1_api.Controllers
         public async Task<IActionResult> GetSeries([FromQuery] SerieQueryObject query)
         {
             var (series, totalCount) = await _serieRepo.GetSeriesAsync(query);
-            var seriesDto = series.Select(e => e.ToSerieMangaDto()).ToList();
+            var seriesDto = series.Select(e => e.ToSerieMangaDto()).AsQueryable();
+            // var seriesDto = series.Select(e => e.ToSerieMangaDto()).ToList();
+
+            var sortedSeriesDtos = seriesDto.ApplySort(query.SortBy, query.IsDescending).ToList();
 
             var paginationResponse = new PaginationResponse<SerieMangaDto>(
-                seriesDto,
+                sortedSeriesDtos,
                 query.PageNumber,
                 query.PageSize,
                 totalCount

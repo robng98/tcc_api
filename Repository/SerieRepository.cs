@@ -79,7 +79,7 @@ namespace tcc1_api.Repository
             }
             
             // Apply sorting using the extension method
-            series = series.ApplySort(query.SortBy, query.IsDescending);
+            // series = series.ApplySort(query.SortBy, query.IsDescending);
             
             // Get total count for pagination
             var totalCount = await series.CountAsync();
@@ -120,7 +120,7 @@ namespace tcc1_api.Repository
             }
             
             // Apply sorting using the extension method
-            comics = comics.ApplySort(query.SortBy, query.IsDescending);
+            // comics = comics.ApplySort(query.SortBy, query.IsDescending);
             
             // Get total count for pagination
             var totalCount = await comics.CountAsync();
@@ -162,7 +162,7 @@ namespace tcc1_api.Repository
             }
             
             // Apply sorting using the extension method
-            mangas = mangas.ApplySort(query.SortBy, query.IsDescending);
+            // mangas = mangas.ApplySort(query.SortBy, query.IsDescending);
             
             // Get total count for pagination
             var totalCount = await mangas.CountAsync();
