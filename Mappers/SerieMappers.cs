@@ -34,7 +34,7 @@ namespace tcc1_api.Mappers
                 CicloNum = serie.CicloNum,
                 Generos = serie.Generos.Select(g => g.ToGeneroDto()).ToList(),
                 NumEdicoes = serie.Edicoes.Select(e => e.ToEdicaoDto()).Count(),
-                MangaStats = serie.Manga.ToMangaDto(),
+                MangaStats = serie.Manga is not null ?  serie.Manga.ToMangaDto() : null,
                 EditoraId = serie.EditoraId
             };
         }

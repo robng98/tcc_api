@@ -27,9 +27,9 @@ namespace tcc1_api.Controllers
         public async Task<IActionResult> GetSeries([FromQuery] SerieQueryObject query)
         {
             var (series, totalCount) = await _serieRepo.GetSeriesAsync(query);
-            var seriesDto = series.Select(e => e.ToSerieDto()).ToList();
+            var seriesDto = series.Select(e => e.ToSerieMangaDto()).ToList();
 
-            var paginationResponse = new PaginationResponse<SerieDto>(
+            var paginationResponse = new PaginationResponse<SerieMangaDto>(
                 seriesDto,
                 query.PageNumber,
                 query.PageSize,
