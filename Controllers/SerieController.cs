@@ -47,10 +47,12 @@ namespace tcc1_api.Controllers
         public async Task<IActionResult> GetSeriesComics([FromQuery] SerieQueryObject query)
         {
             var (series, totalCount) = await _serieRepo.GetSeriesComicsAsync(query);
-            var seriesComicsDto = series.Select(e => e.ToSerieDto()).ToList();
+            var seriesComicsDto = series.Select(e => e.ToSerieDto()).AsQueryable();
+            
+            var sortedSeriesComicsDtos = seriesComicsDto.ApplySort(query.SortBy, query.IsDescending).ToList();
 
             var paginationResponse = new PaginationResponse<SerieDto>(
-                seriesComicsDto,
+                sortedSeriesComicsDtos,
                 query.PageNumber,
                 query.PageSize,
                 totalCount
@@ -63,10 +65,12 @@ namespace tcc1_api.Controllers
         public async Task<IActionResult> GetSeriesMangas([FromQuery] SerieQueryObject query)
         {
             var (series, totalCount) = await _serieRepo.GetSeriesMangasAsync(query);
-            var seriesMangaDto = series.Select(e => e.ToSerieMangaDto()).ToList();
+            var seriesMangaDto = series.Select(e => e.ToSerieMangaDto()).AsQueryable();
+
+            var sortedSeriesMangaDtos = seriesMangaDto.ApplySort(query.SortBy, query.IsDescending).ToList();
 
             var paginationResponse = new PaginationResponse<SerieMangaDto>(
-                seriesMangaDto,
+                sortedSeriesMangaDtos,
                 query.PageNumber,
                 query.PageSize,
                 totalCount
@@ -85,7 +89,7 @@ namespace tcc1_api.Controllers
                 return NotFound();
             }
 
-            return Ok(serie.ToSerieDto());
+            return Ok(serie.ToSerieMangaDto());
         }
 
         [HttpPost("create/{editoraId:int}")]
