@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using tcc1_api.Data;
 using tcc1_api.Dtos.Editora;
+using tcc1_api.Extensions;
 using tcc1_api.Helpers;
 using tcc1_api.Interfaces;
 using tcc1_api.Mappers;
@@ -29,10 +30,13 @@ namespace tcc1_api.Controllers
         public async Task<IActionResult> GetEditoras([FromQuery]EditoraQueryObject query)
         {
             var (editoras, totalCount) = await _editoraRepo.GetEditorasAsync(query);
-            var editorasDto = editoras.Select(e => e.ToEditoraDto()).ToList();
+            var editorasDto = editoras.Select(e => e.ToEditoraDto()).AsQueryable();
+            // var editorasDto = editoras.Select(e => e.ToEditoraDto()).ToList();
+
+            var sortedEditorasDtos = editorasDto.ApplySort(query.SortBy, query.IsDescending).ToList();
 
             var paginationResponse = new PaginationResponse<EditoraDto>(
-                editorasDto,
+                sortedEditorasDtos,
                 query.PageNumber,
                 query.PageSize,
                 totalCount
