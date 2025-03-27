@@ -63,7 +63,7 @@ namespace tcc1_api.Controllers
                 && !contribuiRequestDto.Funcao.Equals("desenhista", StringComparison.CurrentCultureIgnoreCase)
                 && !contribuiRequestDto.Funcao.Equals("arte-finalista", StringComparison.CurrentCultureIgnoreCase)
                 && !contribuiRequestDto.Funcao.Equals("colorista", StringComparison.CurrentCultureIgnoreCase)
-                && !contribuiRequestDto.Funcao.Equals("mangaka", StringComparison.CurrentCultureIgnoreCase))
+                && !contribuiRequestDto.Funcao.Equals("mangaká", StringComparison.CurrentCultureIgnoreCase))
             {
                 return BadRequest("Função inválida");
             }

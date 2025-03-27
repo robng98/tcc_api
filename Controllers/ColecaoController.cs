@@ -131,7 +131,7 @@ namespace tcc1_api.Controllers
             var mangakaGroup = colecao.Exemplares
                 .Where(e => e.Edicao != null)
                 .SelectMany(e => e.Edicao.Contribuicoes)
-                .Where(c => c.Funcao == "Mangaka")
+                .Where(c => c.Funcao == "Mangaká")
                 .GroupBy(c => c.Contribuidor.Nome)
                 .OrderByDescending(g => g.Count())
                 .FirstOrDefault();
