@@ -30,13 +30,13 @@ namespace tcc1_api.Controllers
         public async Task<IActionResult> GetEditoras([FromQuery]EditoraQueryObject query)
         {
             var (editoras, totalCount) = await _editoraRepo.GetEditorasAsync(query);
-            var editorasDto = editoras.Select(e => e.ToEditoraDto()).AsQueryable();
-            // var editorasDto = editoras.Select(e => e.ToEditoraDto()).ToList();
+            // var editorasDto = editoras.Select(e => e.ToEditoraDto()).AsQueryable();
+            var editorasDto = editoras.Select(e => e.ToEditoraDto()).ToList();
 
-            var sortedEditorasDtos = editorasDto.ApplySort(query.SortBy, query.IsDescending).ToList();
+            // var sortedEditorasDtos = editorasDto.ApplySort(query.SortBy, query.IsDescending).ToList();
 
             var paginationResponse = new PaginationResponse<EditoraDto>(
-                sortedEditorasDtos,
+                editorasDto,
                 query.PageNumber,
                 query.PageSize,
                 totalCount

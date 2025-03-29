@@ -63,7 +63,7 @@ namespace tcc1_api.Repository
             }
             
             // Apply sorting using the extension method
-            // editoras = editoras.ApplySort(query.SortBy, query.IsDescending);
+            editoras = editoras.ApplySort(query.SortBy, query.IsDescending);
             
             // Get total count for pagination
             var totalCount = await editoras.CountAsync();
