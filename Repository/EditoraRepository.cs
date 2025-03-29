@@ -62,20 +62,7 @@ namespace tcc1_api.Repository
                 editoras = editoras.Where(e => e.Nome.ToLower().Contains(query.Nome.ToLower()));
             }
             
-            // Apply sorting using the extension method
-            editoras = editoras.ApplySort(query.SortBy, query.IsDescending);
-            
-            // Get total count for pagination
-            var totalCount = await editoras.CountAsync();
-            
-            // Apply pagination
-            var skipNumber = query.PageSize * (query.PageNumber - 1);
-            var pagedEditoras = await editoras
-                .Skip(skipNumber)
-                .Take(query.PageSize)
-                .ToListAsync();
-            
-            return (pagedEditoras, totalCount);
+            return await ApplySortingAndPaginationAsync(editoras, query);
         }
 
         public async Task<Editora?> UpdateEditoraAsync(int id, UpdateEditoraRequestDto updateEditoraDto)
@@ -94,6 +81,43 @@ namespace tcc1_api.Repository
             await _context.SaveChangesAsync();
 
             return existingEditora;
+        }
+
+        private async Task<(List<Editora> Editoras, int TotalCount)> ApplySortingAndPaginationAsync(
+            IQueryable<Editora> query, EditoraQueryObject queryObject)
+        {
+            bool isSortingByTotalSeries = queryObject.SortBy?.Equals("TotalSeries", StringComparison.OrdinalIgnoreCase) == true;
+            
+            var totalCount = await query.CountAsync();
+            
+            if (isSortingByTotalSeries)
+            {
+                var allItems = await query.ToListAsync();
+                
+                var sortedItems = queryObject.IsDescending
+                    ? allItems.OrderByDescending(e => e.Series.Count).ToList()
+                    : allItems.OrderBy(e => e.Series.Count).ToList();
+                
+                var skipNumber = queryObject.PageSize * (queryObject.PageNumber - 1);
+                var pagedItems = sortedItems
+                    .Skip(skipNumber)
+                    .Take(queryObject.PageSize)
+                    .ToList();
+                
+                return (pagedItems, totalCount);
+            }
+            else
+            {
+                query = query.ApplySort(queryObject.SortBy, queryObject.IsDescending);
+                
+                var skipNumber = queryObject.PageSize * (queryObject.PageNumber - 1);
+                var pagedItems = await query
+                    .Skip(skipNumber)
+                    .Take(queryObject.PageSize)
+                    .ToListAsync();
+                
+                return (pagedItems, totalCount);
+            }
         }
     }
 }
