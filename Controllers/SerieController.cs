@@ -28,13 +28,13 @@ namespace tcc1_api.Controllers
         public async Task<IActionResult> GetSeries([FromQuery] SerieQueryObject query)
         {
             var (series, totalCount) = await _serieRepo.GetSeriesAsync(query);
-            var seriesDto = series.Select(e => e.ToSerieMangaDto()).AsQueryable();
-            // var seriesDto = series.Select(e => e.ToSerieMangaDto()).ToList();
+            // var seriesDto = series.Select(e => e.ToSerieMangaDto()).AsQueryable();
+            var seriesDto = series.Select(e => e.ToSerieMangaDto()).ToList();
 
-            var sortedSeriesDtos = seriesDto.ApplySort(query.SortBy, query.IsDescending).ToList();
+            // var sortedSeriesDtos = seriesDto.ApplySort(query.SortBy, query.IsDescending).ToList();
 
             var paginationResponse = new PaginationResponse<SerieMangaDto>(
-                sortedSeriesDtos,
+                seriesDto,
                 query.PageNumber,
                 query.PageSize,
                 totalCount
@@ -47,12 +47,12 @@ namespace tcc1_api.Controllers
         public async Task<IActionResult> GetSeriesComics([FromQuery] SerieQueryObject query)
         {
             var (series, totalCount) = await _serieRepo.GetSeriesComicsAsync(query);
-            var seriesComicsDto = series.Select(e => e.ToSerieDto()).AsQueryable();
+            var seriesComicsDto = series.Select(e => e.ToSerieDto()).ToList();
             
-            var sortedSeriesComicsDtos = seriesComicsDto.ApplySort(query.SortBy, query.IsDescending).ToList();
+            // var sortedSeriesComicsDtos = seriesComicsDto.ApplySort(query.SortBy, query.IsDescending).ToList();
 
             var paginationResponse = new PaginationResponse<SerieDto>(
-                sortedSeriesComicsDtos,
+                seriesComicsDto,
                 query.PageNumber,
                 query.PageSize,
                 totalCount
@@ -65,12 +65,12 @@ namespace tcc1_api.Controllers
         public async Task<IActionResult> GetSeriesMangas([FromQuery] SerieQueryObject query)
         {
             var (series, totalCount) = await _serieRepo.GetSeriesMangasAsync(query);
-            var seriesMangaDto = series.Select(e => e.ToSerieMangaDto()).AsQueryable();
+            var seriesMangaDto = series.Select(e => e.ToSerieMangaDto()).ToList();
 
-            var sortedSeriesMangaDtos = seriesMangaDto.ApplySort(query.SortBy, query.IsDescending).ToList();
+            // var sortedSeriesMangaDtos = seriesMangaDto.ApplySort(query.SortBy, query.IsDescending).ToList();
 
             var paginationResponse = new PaginationResponse<SerieMangaDto>(
-                sortedSeriesMangaDtos,
+                seriesMangaDto,
                 query.PageNumber,
                 query.PageSize,
                 totalCount
